@@ -1,40 +1,50 @@
-# TP2 - Infrastructure Virtuelle et Sécurisation d'un Environnement d'Entreprise
+# Infrastructure d'Entreprise Virtualisée (VMware ESXi & Active Directory)
 
-Projet académique réalisé dans le cadre du programme de Réseau et Cybersécurité, visant à concevoir, déployer et administrer une infrastructure virtualisée multi-hôtes sous VMware ESXi, intégrée à un domaine Active Directory, avec des mesures de contrôle de trafic et de services réseau.
-
-## Aperçu du Projet
-Ce projet simule l'infrastructure informatique d'une PME répartie sur deux hôtes de virtualisation. Il met en œuvre des mécanismes de cloisonnement réseau, de services d'infrastructure centralisés (DNS, DHCP, Active Directory, Partage de fichiers) et de services web sécurisés.
-
-## Outils et Technologies Utilisés
-* **Hyperviseur :** VMware ESXi
-* **Systèmes d'exploitation :** Windows Server (Active Directory / DNS), Linux Ubuntu Server (Apache, SSSD), Windows 10/11 (Clients)
-* **Réseau :** TCP/IP, DNS, DHCP, Kerberos, Traffic Shaping ESXi
+Projet d'infrastructure réseau et virtualisation visant à concevoir un environnement d'entreprise cloisonné, administré et sécurisé.
 
 ---
 
-## Architecture et Composants de l'Infrastructure
-
-L'environnement repose sur deux hyperviseurs VMware ESXi gérant plusieurs machines virtuelles segmentées par des groupes de ports (Port Groups) dédiés :
-
-* **Contrôleur de Domaine (`DC01`) :** Gestion active Directory (AD DS), service DNS principal et service DHCP.
-* **Serveur de Fichiers (`FILE01`) :** Partage de fichiers d'entreprise structuré par départements avec gestion des permissions d'accès basées sur le domaine.
-* **Serveur Web (`WEB01`) :** Serveur HTTP (Apache) hébergeant la page de présentation institutionnelle du projet, joint au domaine via SSSD/Kerberos.
-* **Postes Clients (`CLIENT01` à `CLIENT04`) :** Postes de travail intégrés au domaine, utilisés pour les tests de connectivité, de routage et de performance.
+## Table des Matières
+1. [Architecture de l'Infrastructure](#-architecture-de-l'infrastructure)
+2. [Étapes de Déploiement (Pas à Pas)](#-étapes-de-déploiement-pas-à-pas)
+3. [Phase de Tests et Validation](#-phase-de-tests-et-validation)
 
 ---
 
-## Réalisations Techniques Clés
+## 1. Architecture de l'Infrastructure
+L'environnement repose sur deux hyperviseurs VMware ESXi (`esxi1` et `esxi2`) interconnectés et segmentés via des groupes de ports virtuels :
+* **DC01** : Contrôleur de Domaine (Active Directory, DNS, DHCP).
+* **FILE01** : Serveur de fichiers avec arborescence et partages sécurisés.
+* **WEB01** : Serveur Web Apache personnalisé (page institutionnelle).
+* **CLIENT01 à 04** : Postes clients intégrés au domaine avec limitations de bande passante.
 
-### 1. Virtualisation et Haute Disponibilité (VMware ESXi)
-* Déploiement et configuration de deux hôtes ESXi (`esxi1` et `esxi2`) avec attribution de FQDN propres (`esxi1-TP2.bb.ca`, `esxi2-TP2.bb.ca`) et activation des accès d'administration sécurisés (SSH).
-* Configuration des commutateurs virtuels et des groupes de ports isolés (`PG-SERVEURS`, `PG-WEB`, `PG-CLIENT01` à `04`).
-* Migration à chaud / à froid d'une machine virtuelle (`CLIENT04`) d'un hôte ESXi à un autre avec validation de la continuité de service.
+---
 
-### 2. Contrôle de Bande Passante (Traffic Shaping)
-Mise en place de politiques de limitation de débit au niveau des groupes de ports ESXi pour simuler des contraintes réseau réalistes :
-* **`PG-WEB` :** Limité à 3 Mbps (~375 Ko/s)
-* **`PG-CLIENT01` à `04` :** Politiques échelonnées de 1 Mbps à 10 Mbps (ex: `CLIENT04` à 10 Mbps / ~1250 Ko/s).
+## 2. Étapes de Déploiement (Pas à Pas)
 
-### 3. Intégration au Domaine et Sécurité
-* Jonction des serveurs Linux (`WEB01`, `FILE01`) au domaine Active Directory (`TP2.BB.CA`) via l'authentification Kerberos et SSSD.
-* Configuration des enregistrements DNS (directs et inverses) sur le DC pour assurer la résolution FQDN de l'ensemble des services.
+### Étape 1 : Virtualisation et Configuration des ESXi
+* Déploiement des deux hôtes ESXi.
+* Configuration des FQDN (`esxi1-TP2.bb.ca` et `esxi2-TP2.bb.ca`), des paramètres réseau et activation du service SSH.
+* Création des commutateurs virtuels et des groupes de ports dédiés (`PG-SERVEURS`, `PG-WEB`, `PG-CLIENT01 à 04`).
+
+### Étape 2 : Déploiement des Services d'Infrastructure (DC01)
+* Installation et configuration du système pour le rôle de Contrôleur de Domaine Active Directory (`TP2.BB.CA`).
+* Mise en place du service DNS (zones directes et inverses) et du service DHCP pour l'attribution dynamique des adresses IP des clients.
+
+### Étape 3 : Mise en place des Serveurs (FILE01 et WEB01)
+* Déploiement des machines virtuelles Linux/Windows.
+* Jonction au domaine Active Directory.
+* Configuration du serveur de fichiers (`FILE01`) avec les permissions de partage.
+* Configuration du serveur web (`WEB01`) sous Apache avec personnalisation de la page HTML (nom, initiales, serveur, date).
+
+### Étape 4 : Politiques de Sécurité et Traffic Shaping
+* Application des limites de bande passante sur les groupes de ports ESXi (ex: `PG-WEB` à 3 Mbps, `PG-CLIENT04` à 10 Mbps).
+
+---
+
+## 3. Phase de Tests et Validation
+*(Vous pouvez faire pointer cette section vers votre dossier de tests)*
+* **Test du Traffic Shaping :** Validation des débits bridés via transferts ou outils de mesure.
+* **Migration de machine virtuelle :** Déplacement à chaud/froid du `CLIENT04` de `esxi1` vers `esxi2` avec vérification de la persistance de la connectivité réseau et du domaine.
+
+*Voir le dossier [Tests/](./Tests/) pour retrouver l'ensemble des captures d'écran justificatives.*
