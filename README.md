@@ -5,9 +5,9 @@ Projet d'infrastructure réseau et virtualisation visant à concevoir un environ
 ---
 
 ## Table des Matières
-1. [Architecture de l'Infrastructure](#-architecture-de-l'infrastructure)
-2. [Étapes de Déploiement (Pas à Pas)](#-étapes-de-déploiement-pas-à-pas)
-3. [Phase de Tests et Validation](#-phase-de-tests-et-validation)
+1. [Architecture de l'Infrastructure](#1-architecture-de-linfrastructure)
+2. [Étapes de Déploiement (Pas à Pas)](#2-etapes-de-deploiement-pas-a-pas)
+3. [Phase de Tests et Validation](./Tests/README.md)
 
 ---
 
