@@ -14,4 +14,4 @@ Cette section documente les tests de migration de la machine virtuelle `CLIENT04
 
 ## 3. Captures d'écran de validation
 
-![Migration WinSCP](./Migration.png)
+![Migration WinSCP](./Images/Migration.png)
