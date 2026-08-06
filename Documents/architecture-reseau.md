@@ -2,15 +2,15 @@
 
 ## 1. Vue d'ensemble des Machines Virtuelles
 Voici l'inventaire de nos machines virtuelles déployées sur l'infrastructure ESXi :
-![Machines Virtuelles](./Machines-virtuelles.png)
+![Machines Virtuelles](./Images/Machines-virtuelles.png)
 
 ## 2. Segmentation Réseau (Groupes de ports)
 Les groupes de ports virtuels ont été configurés pour isoler les services et les clients :
-![Groupes de ports](./Group-Ports.png)
+![Groupes de ports](./Images/Group-Ports.png)
 
 ## 3. Gestion du Stockage
 Aperçu des datastores configurés sur les hôtes :
-![Stockages](./Stockages.png)
+![Stockages](./Images/Stockages.png)
 
 ## 4. Politiques de trafic (Limitations)
-![Limitations](./Limitations.png)
+![Limitations](./Images/Limitations.png)
