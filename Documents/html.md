@@ -24,4 +24,4 @@
 ## Vue d'ensemble de la page Apache2
 Voici le visuel de la page Web avec une capture d'écran :
 
-![Website](./page-web.png)
+![Website](./Images/page-web.png)
